@@ -6,9 +6,9 @@ class Possibilities:
         self.board = self.__calculate_possibilities(game_list)
         self.game_list = game_list
 
-    def victory_list(self, first_or_last):
+    def victory_list(self, first_or_second):
         victory_list = []
-        if first_or_last == "first":
+        if first_or_second == "first":
             for i in range(len(self.game_list)):
                 victory_list.append(self.board[i][len(self.game_list) - 1 - i])
             return victory_list
@@ -17,14 +17,32 @@ class Possibilities:
                 victory_list.append(self.board[i][len(self.game_list) - i])
             return victory_list
 
-    def probability_of_victory(self, victory_list, left_or_right):
+    def best_turn_order(self):
+        first_victory_list = self.victory_list("first")
+        second_victory_list = self.victory_list("second")
+        average_first = mean(first_victory_list)
+        average_second = mean(second_victory_list)
+        if average_first > average_second:
+            return "first"
+        else:
+            return "second"
+
+    def best_move(self, victory_list):
+        average_score_right = self.average_score(victory_list, "right")
+        average_score_left = self.average_score(victory_list, "left")
+        if average_score_right > average_score_left:
+            return "right"
+        else:
+            return "left"
+
+    def average_score(self, victory_list, left_or_right):
         copy = victory_list[:]
         print(f"copy {copy}")
         if left_or_right == "right":
-            copy.pop(0)
+            copy.pop()
             return mean(copy)
         else:
-            copy.pop()
+            copy.pop(1)
             return mean(copy)
 
     def __calculate_possibilities(self, game_list):
