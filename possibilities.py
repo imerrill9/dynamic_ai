@@ -1,6 +1,18 @@
 class Possibilities:
     def __init__(self, game_list):
         self.board = self.__calculate_possibilities(game_list)
+        self.game_list = game_list
+
+    def victory_list(self, is_first):
+        victory_list = []
+        if is_first:
+            for i in range(len(self.game_list)):
+                victory_list.append(self.board[i][len(self.game_list) - 1 - i])
+            return victory_list
+        else:
+            for i in range(len(self.game_list) + 1):
+                victory_list.append(self.board[i][len(self.game_list) - i])
+            return victory_list
 
     def __calculate_possibilities(self, game_list):
         board = [[0 for x in range(len(game_list) + 1)] for y in range(len(game_list) + 1)]
