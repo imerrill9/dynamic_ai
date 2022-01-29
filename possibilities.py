@@ -28,21 +28,21 @@ class Possibilities:
             return "second"
 
     def best_move(self, victory_list):
-        average_score_right = self.average_score(victory_list, "right")
-        average_score_left = self.average_score(victory_list, "left")
-        if average_score_right > average_score_left:
-            return "right"
+        average_score_first = self.average_score(victory_list, "first")
+        average_score_last = self.average_score(victory_list, "last")
+        if average_score_first > average_score_last:
+            return "first"
         else:
-            return "left"
+            return "last"
 
-    def average_score(self, victory_list, left_or_right):
+    def average_score(self, victory_list, first_or_last):
         copy = victory_list[:]
-        print(f"copy {copy}")
-        if left_or_right == "right":
+        print(f"vicotry list {victory_list}")
+        if first_or_last == "first":
             copy.pop()
             return mean(copy)
         else:
-            copy.pop(1)
+            copy.pop(0)
             return mean(copy)
 
     def __calculate_possibilities(self, game_list):
