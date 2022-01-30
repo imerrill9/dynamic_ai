@@ -18,7 +18,7 @@ Play a game vrs a computer that uses a dynamic programming algorithm to choose m
 
 Who will win?
 
-Given a list of 10 20 or 50 numbers, take turns choosing from the first number
+Given a list of 10 20 or 30 numbers, take turns choosing from the first number
 or the last number to add to your score.
 
 Highest score wins the game!
@@ -33,9 +33,9 @@ def choose_list_size():
         """
 -----------------------------------------------------------------------
 Enter list size for the game
-1. 10
-2. 20
-3. 30
+1. 10 - easy
+2. 20 - medium
+3. 30 - difficult
            
         """
     )
@@ -55,7 +55,6 @@ Enter list size for the game
 
 def choose_turn_order(list_size):
     game_list = generate_random_game(list_size)
-    # game_list = [2, 3, 4, 6]
     global possibilities
     possibilities = Possibilities(game_list)
     global game
