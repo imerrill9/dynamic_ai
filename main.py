@@ -205,6 +205,7 @@ Computer: {game.computer_score}                        Player: {game.player_scor
       Computer wins with {game.computer_score} points!
           """
         )
+    quit()
 
 
 def take_turn(player):
