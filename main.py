@@ -224,7 +224,6 @@ Computer: {game.computer_score}                        Player: {game.player_scor
 
     if player == "computer":
         best_move = possibilities.best_move(game.x, game.y)
-        print(f"best_move: {best_move}")
         if best_move == "first":
             points = game.game_list[game.x]
             game.computer_score += points
