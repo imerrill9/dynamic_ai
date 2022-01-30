@@ -1,4 +1,5 @@
 from possibilities import Possibilities
+from game import Game
 from random import randint
 
 
@@ -54,51 +55,100 @@ Enter list size for the game
 
 def choose_turn_order(list_size):
     game_list = generate_random_game(list_size)
+    # game_list = [2, 3, 4, 6]
     global possibilities
     possibilities = Possibilities(game_list)
-    player_score = 0
-    computer_score = 0
-    best_move = possibilities.best_turn_order()
+    global game
+    game = Game(game_list)
 
     print(
         f"""
 -----------------------------------------------------------------------
-                           GAME ON!!
 
-Computer: {computer_score}                        Player: {player_score}
+{game.print_list()}
 
-{game_list}
-
-The computer would like to go {best_move},
-Is that ok? (y/n)
-           
-        """
+Call the coin toss! (h/t)
+    """
     )
 
     while True:
         command = input()
-        if command.lower() == "y":
-            if best_move == "first":
-                victory_list = possibilities.victory_list("first")
-                run_game("computer", victory_list, game_list, player_score, computer_score)
-            else:
-                victory_list = possibilities.victory_list("second")
-                run_game("player", victory_list, game_list, player_score, computer_score)
-        elif command.lower() == "n":
-            let_player_choose_turn_order(game_list, player_score, computer_score)
+        if command == "h":
+            winner = run_coin_toss(0)
+            break
+        elif command == "t":
+            winner = run_coin_toss(1)
+            break
         elif command.lower() == "exit":
             quit()
         else:
             print(f"command {command} not recognized.")
 
+    if winner == "player":
+        let_player_choose_turn_order()
+    else:
+        best_turn_order = possibilities.best_turn_order()
+        if best_turn_order == "first":
+            run_game("computer")
+        else:
+            run_game("player")
 
-def let_player_choose_turn_order(game_list, player_score, computer_score):
+
+def run_coin_toss(called):
+    coin = randint(0, 1)
+
+    if coin == 0:
+        print(
+            """
+        _.-'~~`~~'-._
+     .'`  B   E   R  `'.
+    / I               T \\
+  /`       .-'~"-.       `\\
+ ; L      / `-    \      Y ;
+;        />  `.  -.|        ;
+|       /_     '-.__)       |
+|        |-  _.' \ |        |
+;        `~~;     \\        ;
+ ;         /      \\)     ;
+  \        '.___.-'`"     /
+   `\                   /`
+     '._   1 9 9 7   _.'
+        `'-..,,,..-'`
+        """
+        )
+    else:
+        print(
+            """
+        _.-'~~`~~'-._
+     .'`  B   E   R  `'.
+    / I               T \\
+  /`                     `\\
+ ; L          _          Y ;
+;        ___-(o) ___        ;
+|       ////\_|_/\\\\\\        |
+;      ///    |    \\\\       ;
+ ;     /     '|`     \     ;
+  \                       /
+   `\                   /`
+     '._   1 9 9 7   _.'
+        `'-..,,,..-'`
+              """
+        )
+
+    if called == coin:
+        print("Congrats! You win the coin toss.")
+        return "player"
+    else:
+        print(f"Sorry! it's {'heads' if coin == 0 else 'tails'}")
+        return "computer"
+
+
+def let_player_choose_turn_order():
     print(
         f"""
 -----------------------------------------------------------------------
-Computer: {computer_score}                        Player: {player_score}
 
-{game_list}
+{game.print_list()}
 
 Would you like to go first or second? (f/s)
            
@@ -108,60 +158,89 @@ Would you like to go first or second? (f/s)
     while True:
         command = input()
         if command.lower() == "f":
-            victory_list = possibilities.victory_list("second")
-            run_game("player", victory_list, game_list, player_score, computer_score)
+            run_game("player")
         elif command.lower() == "s":
-            victory_list = possibilities.victory_list("first")
-            run_game("computer", victory_list, game_list, player_score, computer_score)
+            run_game("computer")
         elif command.lower() == "exit":
             quit()
         else:
             print(f"command {command} not recognized.")
 
 
-def run_game(first_player, victory_list, game_list, player_score, computer_score):
-    while len(game_list) > 1:
+def run_game(first_player):
+    while not game.is_finished():
         if first_player == "computer":
-            computer_score = take_turn("computer", victory_list, game_list, player_score, computer_score)
-            player_score = take_turn("player", victory_list, game_list, player_score, computer_score)
+            take_turn("computer")
+            take_turn("player")
         else:
-            player_score = take_turn("player", victory_list, game_list, player_score, computer_score)
-            computer_score = take_turn("computer", victory_list, game_list, player_score, computer_score)
+            take_turn("player")
+            take_turn("computer")
+
+    if game.player_score > game.computer_score:
+        print(
+            f"""
+-----------------------------------------------------------------------
+Computer: {game.computer_score}                        Player: {game.player_score}
+      
+      
+      PLAYER WINS!!!!!!!!! GO HUMANS!! WE GOT THE BRAINS!!
+          """
+        )
+    elif game.player_score == game.computer_score:
+        print(
+            f"""
+-----------------------------------------------------------------------
+Computer: {game.computer_score}                        Player: {game.player_score}
+      
+      
+      Tie game. Well played GG
+          """
+        )
+    else:
+        print(
+            f"""
+-----------------------------------------------------------------------
+Computer: {game.computer_score}                        Player: {game.player_score}
+      
+      
+      Computer wins with {game.computer_score} points!
+          """
+        )
 
 
-def take_turn(player, victory_list, game_list, player_score, computer_score):
+def take_turn(player):
     print(
         f"""
 -----------------------------------------------------------------------
-Computer: {computer_score}                        Player: {player_score}
+Computer: {game.computer_score}                        Player: {game.player_score}
 
-{game_list}
+{game.print_list()}
            
         """
     )
 
     if player == "computer":
-        best_move = possibilities.best_move(victory_list)
+        best_move = possibilities.best_move(game.x, game.y)
         if best_move == "first":
-            points = game_list.pop(0)
-            victory_list.pop(0)
+            points = game.game_list[game.x]
+            game.computer_score += points
+            game.x += 1
             print(
                 f"""
 Computer chooses first number and gets {points} points
  
                   """
             )
-            return computer_score + points
         else:
-            points = game_list.pop()
-            victory_list.pop()
+            points = game.game_list[game.y]
+            game.computer_score += points
+            game.y -= 1
             print(
                 f"""
 Computer chooses last number and gets {points} points
  
                   """
             )
-            return computer_score + points
     else:
         print(
             f"""
@@ -172,25 +251,27 @@ Your turn! Would you like to take the first number or the last? (f/l)
         while True:
             command = input()
             if command.lower() == "f":
-                points = game_list.pop(0)
-                victory_list.pop(0)
+                points = game.game_list[game.x]
+                game.player_score += points
+                game.x += 1
                 print(
                     f"""
 Player chooses first number and gets {points} points
  
                   """
                 )
-                return player_score + points
+                break
             elif command.lower() == "l":
-                points = game_list.pop()
-                victory_list.pop()
+                points = game.game_list[game.y]
+                game.player_score += points
+                game.y -= 1
                 print(
                     f"""
 Player chooses last number and gets {points} points
  
                   """
                 )
-                return player_score + points
+                break
             elif command.lower() == "exit":
                 quit()
             else:
