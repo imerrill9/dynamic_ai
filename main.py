@@ -108,8 +108,8 @@ def run_coin_toss(called):
 ;        />  `.  -.|        ;
 |       /_     '-.__)       |
 |        |-  _.' \ |        |
-;        `~~;     \\        ;
- ;         /      \\)     ;
+;        `~~;     \\         ;
+ ;         /      \\)       ;
   \        '.___.-'`"     /
    `\                   /`
      '._   1 9 9 7   _.'
@@ -218,9 +218,13 @@ Computer: {game.computer_score}                        Player: {game.player_scor
            
         """
     )
+    ## to see what the computer is thinking add this to the print above
+    ## computer brain:
+    ##x: {game.x} y: {game.y} tuple: {possibilities.board[game.x][game.y]}
 
     if player == "computer":
         best_move = possibilities.best_move(game.x, game.y)
+        print(f"best_move: {best_move}")
         if best_move == "first":
             points = game.game_list[game.x]
             game.computer_score += points

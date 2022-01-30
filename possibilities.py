@@ -21,7 +21,7 @@ class Possibilities:
 
         # starting values
         for i in range(len(game_list)):
-            board[i][i] = (i, 0, "f")
+            board[i][i] = (i, 0, "first")
 
         for i in range(len(game_list)):
             board = self.__run_scenarios(board, game_list, 0, i + 1)
@@ -35,9 +35,9 @@ class Possibilities:
         consider_first = board[x + 1][y][1] + game_list[x]
         consider_last = board[x][y - 1][1] + game_list[y]
         if consider_first > consider_last:
-            board[x][y] = (consider_first, board[x + 1][y][0], "f")
+            board[x][y] = (consider_first, board[x + 1][y][0], "first")
         else:
-            board[x][y] = (consider_last, board[x][y - 1][0], "l")
+            board[x][y] = (consider_last, board[x][y - 1][0], "last")
 
         return self.__run_scenarios(board, game_list, x + 1, y + 1)
 
