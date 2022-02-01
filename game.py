@@ -6,11 +6,8 @@ class Game:
         self.player_score = 0
         self.computer_score = 0
 
-    def print_list(self):
+    def display_list(self):
         return self.game_list[self.x : (self.y + 1)]
 
     def is_finished(self):
-        if self.x > self.y:
-            return True
-        else:
-            return False
+        return self.x > self.y

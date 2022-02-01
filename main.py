@@ -64,7 +64,7 @@ def choose_turn_order(list_size):
         f"""
 -----------------------------------------------------------------------
 
-{game.print_list()}
+{game.display_list()}
 
 Call the coin toss! (h/t)
     """
@@ -147,7 +147,7 @@ def let_player_choose_turn_order():
         f"""
 -----------------------------------------------------------------------
 
-{game.print_list()}
+{game.display_list()}
 
 Would you like to go first or second? (f/s)
            
@@ -214,7 +214,7 @@ def take_turn(player):
 -----------------------------------------------------------------------
 Computer: {game.computer_score}                        Player: {game.player_score}
 
-{game.print_list()}
+{game.display_list()}
            
         """
     )

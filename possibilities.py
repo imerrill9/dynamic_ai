@@ -1,6 +1,3 @@
-from statistics import mean
-
-
 class Possibilities:
     def __init__(self, game_list):
         self.board = self.__calculate_possibilities(game_list)
@@ -40,6 +37,3 @@ class Possibilities:
             board[x][y] = (consider_last, board[x][y - 1][0], "last")
 
         return self.__run_scenarios(board, game_list, x + 1, y + 1)
-
-    def print_board(self):
-        return self.board
