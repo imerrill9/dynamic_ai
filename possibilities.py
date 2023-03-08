@@ -14,7 +14,7 @@ class Possibilities:
 
     def __calculate_possibilities(self, game_list):
         # (first, second, best_move)
-        board = [[(0, 0, 0) for x in range(len(game_list))] for y in range(len(game_list))]
+        board = [[(0, 0, 0) for _ in range(len(game_list))] for _ in range(len(game_list))]
 
         # starting values
         for i in range(len(game_list)):
